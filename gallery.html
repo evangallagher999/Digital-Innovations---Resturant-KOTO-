@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="mystyle.css">
+    <link rel="icon" type="image/jpg" href="images/favicon.jpg">
+    <title>Gallery</title>
+    <style>
+        .gallery-main-slider {
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            margin-bottom: 16px;
+            cursor: pointer;
+            background: #111;
+            height: 480px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gallery-main-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 8rem;
+            background: linear-gradient(135deg, #1a1a1a, #2c2c2c);
+        }
+        .gallery-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 16px;
+            pointer-events: none;
+        }
+        .gallery-arrows button {
+            pointer-events: all;
+            background: rgba(0,0,0,0.55);
+            border: none;
+            color: white;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            transition: background var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .gallery-arrows button:hover {
+            background: var(--gold);
+            color: var(--ink);
+        }
+        .video-controls {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        .video-controls button {
+            background: var(--ink);
+            color: white;
+            border: 1px solid rgba(255,255,255,0.15);
+            padding: 9px 22px;
+            border-radius: var(--radius);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background var(--transition);
+        }
+        .video-controls button:hover {
+            background: var(--gold);
+            color: var(--ink);
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="site-brand">
+            <h1>Koto</h1>
+            <img src="images/koto-logo.jpg" alt="Koto Logo">
+        </div>
+        <nav class="site-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="business_hours.html">Hours</a></li>
+                <li><a href="reservations.html">Reservations</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li class="nav-dropdown">
+                    <button class="nav-dropdown-btn">Menu <i class="fa fa-caret-down"></i></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="Specials.html">Specials</a>
+                        <a href="Mains.html">Mains</a>
+                        <a href="Beverages.html">Beverages</a>
+                    </div>
+                </li>
+                <li class="nav-search">
+                    <input type="text" id="searchBox" placeholder="Search..." onkeypress="if(event.key==='Enter') searchSite()">
+                    <button onclick="searchSite()">Search</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="page-hero">
+    <h2>Gallery</h2>
+    <p>A glimpse into the world of Koto</p>
+</div>
+
+<main>
+    <div class="gallery-main-slider" id="mainSlider" onclick="toggleThumbnails()">
+        <div class="gallery-main-placeholder" id="mainDisplay">🍱</div>
+        <div class="gallery-hint" id="galleryHint">Click to browse photos</div>
+        <div class="gallery-arrows">
+            <button onclick="event.stopPropagation(); changeSlide(-1)">&#8249;</button>
+            <button onclick="event.stopPropagation(); changeSlide(1)">&#8250;</button>
+        </div>
+    </div>
+
+    <div class="video-section">
+        <h2 class="section-title">See <span>Koto</span> in Action</h2>
+        <div class="gold-divider" style="margin-bottom:32px;"></div>
+
+        <div class="video-wrap" style="position: relative; max-width: 600px; margin: 0 auto;">
+            <div class="video-placeholder" id="videoPlaceholder" 
+                 style="position: relative; width: 100%; height: 0; padding-bottom: 177.78%; background: #000; border-radius: 8px; overflow: hidden; cursor: pointer;">
+                <img src="https://picsum.photos/id/1015/600/1067" 
+                     alt="Koto Restaurant Story" 
+                     style="width: 100%; height: 100%; object-fit: cover; display: block;">
+                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 80px; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.6); pointer-events: none; z-index: 2;">▶</div>
+                <div style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: white; font-size: 18px; text-align: center; text-shadow: 0 2px 8px rgba(0,0,0,0.7); z-index: 2;">Watch our restaurant story</div>
+            </div>
+        </div>
+
+        <div class="video-controls" style="margin-top: 16px; text-align: center;">
+            <button onclick="playExternalVideo()" style="padding: 12px 28px; font-size: 16px;">▶ Watch Video on Instagram</button>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 Koto. All rights reserved.</p>
+    <div class="map-container">
+        <iframe src="https://www.google.com/maps?q=6+Carey%27s+Lane,+Cork,+Ireland&output=embed" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+    <div class="social">
+        <a href="https://www.facebook.com/KotoCork/photos/" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/kotocork" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/jeff_koto" target="_blank"><i class="fab fa-x-twitter"></i></a>
+    </div>
+</footer>
+
+<script src="search.js"></script>
+<script>
+    const gallery = [
+        { emoji:'🍱', src:'images/gallery1.jpg',  label:'Bento Selection' },
+        { emoji:'🍣', src:'images/gallery2.jpg',  label:'Sushi Platter' },
+        { emoji:'🍜', src:'images/gallery3.jpg',  label:'Ramen Bowl' },
+        { emoji:'🥢', src:'images/gallery4.jpg',  label:'Yakitori Skewers' },
+        { emoji:'🍶', src:'images/gallery5.jpg',  label:'Sake Selection' },
+        { emoji:'🏮', src:'images/gallery6.jpg',  label:'Restaurant Interior' },
+        { emoji:'🌸', src:'images/gallery7.jpg',  label:'Spring Menu' },
+        { emoji:'🍡', src:'images/gallery8.jpg',  label:'Desserts' },
+        { emoji:'🥗', src:'images/gallery9.jpg',  label:'Salad Course' },
+        { emoji:'🍤', src:'images/gallery10.jpg', label:'Tempura' },
+    ];
+
+    let currentImg = 0;
+    let thumbsVisible = false;
+    const mainDisplay = document.getElementById('mainDisplay');
+    const thumbGrid   = document.getElementById('thumbGrid');
+    const hint        = document.getElementById('galleryHint');
+
+    function renderMain(idx) {
+        mainDisplay.textContent = gallery[idx].emoji;
+        const img = new Image();
+        img.onload = () => {
+            mainDisplay.innerHTML = '';
+            const el = document.createElement('img');
+            el.src = gallery[idx].src; el.alt = gallery[idx].label;
+            el.style.cssText = 'width:100%;height:100%;object-fit:cover;';
+            mainDisplay.appendChild(el);
+        };
+        img.src = gallery[idx].src;
+        document.querySelectorAll('.gallery-thumb').forEach((t,i) => t.classList.toggle('active', i===idx));
+    }
+
+    gallery.forEach((g, i) => {
+        const div = document.createElement('div');
+        div.className = 'gallery-thumb' + (i===0 ? ' active' : '');
+        div.textContent = g.emoji;
+        const img = new Image();
+        img.onload = () => { div.textContent=''; const el=document.createElement('img'); el.src=g.src; el.alt=g.label; div.appendChild(el); };
+        img.src = g.src;
+        div.addEventListener('click', () => { currentImg=i; renderMain(i); });
+        thumbGrid.appendChild(div);
+    });
+
+    function toggleThumbnails() {
+        thumbsVisible = !thumbsVisible;
+        thumbGrid.classList.toggle('visible', thumbsVisible);
+        hint.textContent = thumbsVisible ? 'Click to hide photos' : 'Click to browse photos';
+    }
+
+    function changeSlide(dir) {
+        currentImg = (currentImg + dir + gallery.length) % gallery.length;
+        renderMain(currentImg);
+    }
+
+    renderMain(0);
+
+    const video = document.getElementById('restaurantVideo');
+    const placeholder = document.getElementById('videoPlaceholder');
+
+    function playVideo() { video.style.display='block'; placeholder.style.display='none'; video.play(); }
+    function playPause() { video.style.display='block'; placeholder.style.display='none'; if(video.paused) video.play(); else video.pause(); }
+    function goFullscreen() { if(video.requestFullscreen) video.requestFullscreen(); else if(video.webkitRequestFullscreen) video.webkitRequestFullscreen(); }
+</script>
+</body>
+</html>

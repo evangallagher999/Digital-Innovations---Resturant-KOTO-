@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="mystyle.css">
+    <link rel="icon" type="image/jpg" href="images/favicon.jpg">
+    <title>Welcome</title>
+</head>
+<body class="landing">
+
+<header>
+    <div class="header-container">
+        <div class="site-brand">
+            <h1>Koto</h1>
+            <img src="images/koto-logo.jpg" alt="Koto Logo">
+        </div>
+        <nav class="site-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="business_hours.html">Hours</a></li>
+                <li><a href="reservations.html">Reservations</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li class="nav-dropdown">
+                    <button class="nav-dropdown-btn">Menu <i class="fa fa-caret-down"></i></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="Specials.html">Specials</a>
+                        <a href="Mains.html">Mains</a>
+                        <a href="Beverages.html">Beverages</a>
+                    </div>
+                </li>
+                <li class="nav-search">
+                    <input type="text" id="searchBox" placeholder="Search..." onkeypress="if(event.key==='Enter') searchSite()">
+                    <button onclick="searchSite()">Search</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="hero-section">
+        <div class="hero-text">
+            <h1>Welcome To Koto</h1>
+            <p>Cork's leading Japanese inspired restaurant</p>
+            <div class="hero-cta-group">
+                <a href="index.html" class="hero-btn">Home</a>
+                <a href="Specials.html" class="hero-btn">Specials</a>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 Koto. All rights reserved.</p>
+    <div class="map-container">
+        <iframe src="https://www.google.com/maps?q=6+Carey%27s+Lane,+Cork,+Ireland&output=embed" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+    <div class="social">
+        <a href="https://www.facebook.com/KotoCork/photos/" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/kotocork" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/jeff_koto" target="_blank"><i class="fab fa-x-twitter"></i></a>
+    </div>
+</footer>
+
+<script src="search.js"></script>
+
+<script>
+    function toggleDropdown() {
+        const dropdown = document.getElementById('menuDropdown');
+        dropdown.classList.toggle('open');
+    }
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('menuDropdown');
+        if (!dropdown.contains(event.target)) {
+            dropdown.classList.remove('open');
+        }
+    });
+</script>
+
+</body>
+</html>

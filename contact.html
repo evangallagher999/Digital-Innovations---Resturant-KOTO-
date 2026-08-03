@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="mystyle.css">
+    <link rel="icon" type="image/jpg" href="images/favicon.jpg">
+    <title>Contact</title>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="site-brand">
+            <h1>Koto</h1>
+            <img src="images/koto-logo.jpg" alt="Koto Logo">
+        </div>
+                <nav class="site-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="business_hours.html">Hours</a></li>
+                <li><a href="reservations.html">Reservations</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li class="nav-dropdown">
+                    <button class="nav-dropdown-btn">Menu <i class="fa fa-caret-down"></i></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="Specials.html">Specials</a>
+                        <a href="Mains.html">Mains</a>
+                        <a href="Beverages.html">Beverages</a>
+                    </div>
+                </li>
+                <li class="nav-search">
+                    <input type="text" id="searchBox" placeholder="Search..." onkeypress="if(event.key==='Enter') searchSite()">
+                    <button onclick="searchSite()">Search</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="page-hero">
+    <h2>Contact us!</h2>
+    <p>We'd love to hear from you!</p>
+</div>
+
+<main>
+    <div class="contact-layout">
+
+        <!-- Info card -->
+        <div class="contact-info-card">
+            <h3>Get in Touch</h3>
+            <p class="tagline">Whether it's a question, a compliment, or a special request — we're here.</p>
+
+            <div class="contact-detail">
+                <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                <div class="contact-detail-text">
+                    <strong>Address</strong>
+                    <span>6 Carey's Lane, Cork, Ireland</span>
+                </div>
+            </div>
+
+            <div class="contact-detail">
+                <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                <div class="contact-detail-text">
+                    <strong>Phone</strong>
+                    <span>+353 21 427 0933</span>
+                </div>
+            </div>
+
+            <div class="contact-detail">
+                <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                <div class="contact-detail-text">
+                    <strong>Email</strong>
+                    <a href="mailto:book@koto.ie">book@koto.ie</a>
+                </div>
+            </div>
+
+            <div class="contact-detail">
+                <div class="contact-icon"><i class="fas fa-clock"></i></div>
+                <div class="contact-detail-text">
+                    <strong>Hours</strong>
+                    <span>Mon–Wed 9:00–22:00 · Thu–Fri 9:00–23:00<br>Sat 10:00–23:00 · Sun 10:00–21:00</span>
+                </div>
+            </div>
+
+            <div style="margin-top:32px;">
+                <iframe src="https://www.google.com/maps?q=6+Carey%27s+Lane,+Cork,+Ireland&output=embed"
+                    width="100%" height="200" style="border:0;border-radius:4px;opacity:0.85;"
+                    allowfullscreen loading="lazy"></iframe>
+            </div>
+        </div>
+
+        <div class="reservation-form-card">
+            <h3>Send a Message</h3>
+            <div class="form-group">
+                <label for="c-name">Your Name</label>
+                <input type="text" id="c-name" placeholder="John Murphy">
+            </div>
+            <div class="form-group">
+                <label for="c-email">Email Address</label>
+                <input type="email" id="c-email" placeholder="book@koto.ie">
+            </div>
+            <div class="form-group">
+                <label for="c-subject">Subject</label>
+                <input type="text" id="c-subject" placeholder="Enquiry about...">
+            </div>
+            <div class="form-group">
+                <label for="c-msg">Message</label>
+                <textarea id="c-msg" placeholder="Write your message here..."></textarea>
+            </div>
+            <button class="btn-primary" onclick="sendMessage()">Send Message</button>
+            <div class="confirmation-msg" id="contact-conf">
+                ✅ Message Sent Successfully! We'll get back to you within 24 hours.
+            </div>
+        </div>
+
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 Koto. All rights reserved.</p>
+    <div class="map-container">
+        <iframe src="https://www.google.com/maps?q=6+Carey%27s+Lane,+Cork,+Ireland&output=embed" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+    <div class="social">
+        <a href="https://www.facebook.com/KotoCork/photos/" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/kotocork" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/jeff_koto" target="_blank"><i class="fab fa-x-twitter"></i></a>
+    </div>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+<script src="search.js"></script>
+<script>
+    function sendMessage() {
+        const name  = document.getElementById('c-name').value.trim();
+        const email = document.getElementById('c-email').value.trim();
+        const msg   = document.getElementById('c-msg').value.trim();
+        const conf  = document.getElementById('contact-conf');
+
+        if (!name || !email || !msg) { alert('Please fill in your name, email, and message.'); return; }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { alert('Please enter a valid email address.'); return; }
+
+        conf.style.display = 'block';
+        document.getElementById('c-name').value = '';
+        document.getElementById('c-e').value = '';
+    }

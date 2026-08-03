@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="mystyle.css">
+    <link rel="icon" type="image/jpg" href="images/favicon.jpg">
+    <title>Specials</title>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="site-brand">
+            <h1>Koto</h1>
+            <img src="images/koto-logo.jpg" alt="Koto Logo">
+        </div>
+                <nav class="site-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="business_hours.html">Hours</a></li>
+                <li><a href="reservations.html">Reservations</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li class="nav-dropdown">
+                    <button class="nav-dropdown-btn">Menu <i class="fa fa-caret-down"></i></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="Specials.html">Specials</a>
+                        <a href="Mains.html">Mains</a>
+                        <a href="Beverages.html">Beverages</a>
+                    </div>
+                </li>
+                <li class="nav-search">
+                    <input type="text" id="searchBox" placeholder="Search..." onkeypress="if(event.key==='Enter') searchSite()">
+                    <button onclick="searchSite()">Search</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="page-hero">
+    <h2>Specials</h2>
+    <p>This is for the truely unique dishes.</p>
+</div>
+
+        <div class="dish-slideshow">
+        <div id="specialsSlides"></div>
+        <div class="dish-nav">
+            <button onclick="changeSpecial(-1)">&#8249;</button>
+            <div class="slide-dots" id="specialsDots"></div>
+            <button onclick="changeSpecial(1)">&#8250;</button>
+        </div>
+    </div>
+
+    <div style="display:flex;justify-content:center;gap:16px;margin-top:24px;">
+        <a href="Mains.html" style="color:var(--gold);text-decoration:none;font-weight:600;font-size:15px;">
+            <i class="fas fa-arrow-left"></i> Mains
+        </a>
+        <a href="Beverages.html" style="color:var(--gold);text-decoration:none;font-weight:600;font-size:15px;">
+            Beverages <i class="fas fa-arrow-right"></i>
+        </a>
+    </div>
+</main>
+
+<footer>
+    <p>© 2026 Koto. All rights reserved.</p>
+    <div class="map-container">
+        <iframe src="https://www.google.com/maps?q=6+Carey%27s+Lane,+Cork,+Ireland&output=embed" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+    <div class="social">
+        <a href="https://www.facebook.com/KotoCork/photos/" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/kotocork" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/jeff_koto" target="_blank"><i class="fab fa-x-twitter"></i></a>
+    </div>
+</footer>
+
+<script src="search.js"></script>
+<script>
+    const specials = [
+        { emoji:'🍣', img:'images/specials1.jpg', name:'Wagyu Nigiri Selection', price:'€24.00', desc:'Hand-pressed wagyu beef nigiri with ponzu glaze and micro shiso. A luxurious take on the classic.' },
+        { emoji:'🦞', img:'images/specials2.jpg', name:'Lobster Miso Ramen',     price:'€28.00', desc:'Rich lobster broth blended with aged white miso, topped with half a lobster tail and crispy shallots.' },
+        { emoji:'🥩', img:'images/specials3.jpg', name:'Kobe Beef Tataki',       price:'€32.00', desc:'Lightly seared A5 Kobe beef sliced thin, dressed with yuzu kosho vinaigrette and toasted sesame.' },
+        { emoji:'🍡', img:'images/specials4.jpg', name:'Matcha Mochi Trio',      price:'€9.50',  desc:'Three seasonal mochi: ceremonial matcha, black sesame, and roasted hojicha. A perfect finish.' },
+    ];
+
+    buildSlideshow('specialsSlides', 'specialsDots', specials, 'Special');
+
+    function buildSlideshow(slidesId, dotsId, data, prefix) {
+        const slidesEl = document.getElementById(slidesId);
+        const dotsEl   = document.getElementById(dotsId);
+        let current = 0;
+
+        data.forEach((item, i) => {
+            const slide = document.createElement('div');
+            slide.className = 'dish-slide' + (i===0 ? ' active' : '');
+            slide.innerHTML = `
+                <div class="dish-slide-img emoji-placeholder" id="${prefix}-img-${i}">${item.emoji}</div>
+                <div class="dish-details">
+                    <div class="dish-details-text"><h3>${item.name}</h3><p>${item.desc}</p></div>
+                    <span class="dish-price">${item.price}</span>
+                </div>`;
+            slidesEl.appendChild(slide);
+
+            const img = new Image();
+            img.onload = () => {
+                const el = document.getElementById(`${prefix}-img-${i}`);
+                el.innerHTML = `<img src="${item.img}" alt="${item.name}" style="width:100%;height:100%;object-fit:cover;">`;
+                el.classList.remove('emoji-placeholder'); el.style.background='none';
+            };
+            img.src = item.img;
+
+            const dot = document.createElement('span');
+            if (i===0) dot.classList.add('active');
+            dot.addEventListener('click', () => go(i));
+            dotsEl.appendChild(dot);
+        });
+
+        const slides = slidesEl.querySelectorAll('.dish-slide');
+        const dots   = dotsEl.querySelectorAll('span');
+
+        function go(n) {
+            slides[current].classList.remove('active'); dots[current].classList.remove('active');
+            current = (n + data.length) % data.length;
+            slides[current].classList.add('active'); dots[current].classList.add('active');
+        }
+
+        window[`change${prefix}`] = (dir) => go(current + dir);
+        setInterval(() => go(current + 1), 4000);
+    }
+</script>
+</body>
+</html>

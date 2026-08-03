@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="mystyle.css">
+    <link rel="icon" type="image/jpg" href="images/favicon.jpg">
+    <title>Reservations</title>
+</head>
+<body>
+
+<header>
+    <div class="header-container">
+        <div class="site-brand">
+            <h1>Koto</h1>
+            <img src="images/koto-logo.jpg" alt="Koto Logo">
+        </div>
+                <nav class="site-nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="business_hours.html">Hours</a></li>
+                <li><a href="reservations.html">Reservations</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li class="nav-dropdown">
+                    <button class="nav-dropdown-btn">Menu <i class="fa fa-caret-down"></i></button>
+                    <div class="nav-dropdown-menu">
+                        <a href="Specials.html">Specials</a>
+                        <a href="Mains.html">Mains</a>
+                        <a href="Beverages.html">Beverages</a>
+                    </div>
+                </li>
+                <li class="nav-search">
+                    <input type="text" id="searchBox" placeholder="Search..." onkeypress="if(event.key==='Enter') searchSite()">
+                    <button onclick="searchSite()">Search</button>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="page-hero">
+    <h2>Reservations</h2>
+    <p>Book your table at Koto — we look forward to welcoming you</p>
+</div>
+
+<main>
+    <div class="reservation-layout">
+
+        <!-- Form -->
+        <div class="reservation-form-card">
+            <h3>Book a Table</h3>
+            <div class="form-group">
+                <label for="res-name">Full Name</label>
+                <input type="text" id="res-name" placeholder="Your name" required>
+            </div>
+            <div class="form-group">
+                <label for="res-email">Email Address</label>
+                <input type="email" id="res-email" placeholder="you@example.com" required>
+            </div>
+            <div class="form-group">
+                <label for="res-guests">Number of Guests</label>
+                <input type="number" id="res-guests" placeholder="2" min="1" max="20" required>
+            </div>
+            <div class="form-group">
+                <label for="res-date">Preferred Date</label>
+                <input type="date" id="res-date" required>
+            </div>
+            <div class="form-group">
+                <label for="res-time">Preferred Time</label>
+                <select id="res-time">
+                    <option value="">Select a time</option>
+                    <option>12:00 PM</option>
+                    <option>1:00 PM</option>
+                    <option>2:00 PM</option>
+                    <option>6:00 PM</option>
+                    <option>7:00 PM</option>
+                    <option>8:00 PM</option>
+                    <option>9:00 PM</option>
+                </select>
+            </div>
+            <button class="btn-primary" onclick="bookTable()">Confirm Booking</button>
+            <div class="confirmation-msg" id="conf-msg">
+                ✅ Booking Complete! We'll send confirmation to your email.
+            </div>
+        </div>
+
+        <!-- Calendar -->
+        <div class="calendar-card">
+            <h3>Availability — April 2026</h3>
+            <div class="calendar-grid" id="calendar"></div>
+            <div class="cal-legend">
+                <span><span class="dot-green"></span> Available</span>
+                <span><span class="dot-red"></span> Booked</span>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-card">
+            <h3>Busiest Times Today</h3>
+            <canvas id="busyChart" height="80"></canvas>
+        </div>
+
+<!-- ── Day confirmation popup ───────────────── -->
+<div class="popup-overlay" id="dayPopup">
+    <div class="popup-box">
+        <div class="popup-icon">📅</div>
+        <h3>Confirm Your Date</h3>
+        <p>Are you sure of this day?<br>
+           <span class="popup-day-label" id="popupDayLabel"></span>
+        </p>
+        <div class="popup-buttons">
+            <button class="popup-btn-confirm" id="popupConfirm">Yes, confirm</button>
+            <button class="popup-btn-cancel"  id="popupCancel">Go back</button>
+        </div>
+    </div>
+</div>
+    </div>
+</main>
+
+
+<footer>
+    <p>© 2026 Koto. All rights reserved.</p>
+    <div class="map-container">
+        <iframe src="https://www.google.com/maps?q=6+Carey%27s+Lane,+Cork,+Ireland&output=embed" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+    <div class="social">
+        <a href="https://www.facebook.com/KotoCork/photos/" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="https://www.instagram.com/kotocork" target="_blank"><i class="fab fa-instagram"></i></a>
+        <a href="https://x.com/jeff_koto" target="_blank"><i class="fab fa-x-twitter"></i></a>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="search.js"></script>
+<script>
+    // ── Form validation ──────────────────────────────────────────
+    function bookTable() {
+        const name   = document.getElementById('res-name').value.trim();
+        const email  = document.getElementById('res-email').value.trim();
+        const guests = document.getElementById('res-guests').value.trim();
+        const date   = document.getElementById('res-date').value;
+        const time   = document.getElementById('res-time').value;
+        const msg    = document.getElementById('conf-msg');
+
+        if (!name || !email || !guests || !date || !time) {
+            alert('Please fill in all fields before booking.');
+            return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            alert('Please enter a valid email address.');
+            return;
+        }
+
+        msg.style.display = 'block';
+        setTimeout(() => msg.style.display = 'none', 6000);
+    }
+
+    // ── Calendar ─────────────────────────────────────────────────
+    // Days that are already booked and cannot be clicked
+    const preBooked = new Set([5, 10, 15, 18, 22, 27]);
+
+    const cal  = document.getElementById('calendar');
+    const popup        = document.getElementById('dayPopup');
+    const popupLabel   = document.getElementById('popupDayLabel');
+    const btnConfirm   = document.getElementById('popupConfirm');
+    const btnCancel    = document.getElementById('popupCancel');
+
+    let selectedCell = null; // the one cell the user has chosen
+
+    // Day-of-week headers
+    ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => {
+        const h = document.createElement('div');
+        h.className = 'cal-header';
+        h.textContent = d;
+        cal.appendChild(h);
+    });
+
+    // April 2026 starts on Wednesday → 3 empty offset cells
+    for (let i = 0; i < 3; i++) {
+        const e = document.createElement('div');
+        e.className = 'cal-day empty';
+        cal.appendChild(e);
+    }
+
+    // Build day cells
+    for (let day = 1; day <= 30; day++) {
+        const cell = document.createElement('div');
+        cell.dataset.day = day;
+
+        if (preBooked.has(day)) {
+            cell.className = 'cal-day booked';
+        } else {
+            cell.className = 'cal-day available';
+            cell.addEventListener('click', () => handleDayClick(cell, day));
+        }
+
+        cell.textContent = day;
+        cal.appendChild(cell);
+    }
+
+    function handleDayClick(cell, day) {
+        // If the user clicks the already-selected cell, do nothing
+        if (selectedCell === cell) return;
+
+        // Put the previously selected cell back to green (available)
+        if (selectedCell) {
+            selectedCell.className = 'cal-day available';
+        }
+
+        // Mark this cell as the current selection (red/selected state)
+        cell.className = 'cal-day selected';
+        selectedCell = cell;
+
+        // Show confirmation popup
+        popupLabel.textContent = 'April ' + day + ', 2026';
+        popup.classList.add('active');
+    }
+
+    // Confirm — keep the selection, sync date input, close popup
+    btnConfirm.addEventListener('click', () => {
+        if (selectedCell) {
+            const day = selectedCell.dataset.day;
+            const dateInput = document.getElementById('res-date');
+            if (dateInput) {
+                dateInput.value = '2026-04-' + String(day).padStart(2, '0');
+            }
+            // Keep the cell red (selected state stays)
+        }
+        popup.classList.remove('active');
+    });
+
+    // Cancel — revert the cell back to green, clear selection, close popup
+    btnCancel.addEventListener('click', () => {
+        if (selectedCell) {
+            selectedCell.className = 'cal-day available';
+            selectedCell = null;
+        }
+        popup.classList.remove('active');
+    });
+
+    // Click outside the popup box to cancel as well
+    popup.addEventListener('click', (e) => {
+        if (e.target === popup) {
+            if (selectedCell) {
+                selectedCell.className = 'cal-day available';
+                selectedCell = null;
+            }
+            popup.classList.remove('active');
+        }
+    });
+
+    // ── Chart.js ─────────────────────────────────────────────────
+    const ctx = document.getElementById('busyChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['12 PM','1 PM','2 PM','3 PM','4 PM','5 PM','6 PM','7 PM','8 PM','9 PM'],
+            datasets: [{
+                label: 'Occupancy %',
+                data: [65, 55, 40, 25, 30, 50, 90, 85, 75, 60],
+                backgroundColor: (ctx) => {
+                    const v = ctx.raw;
+                    if (v >= 80) return '#c0392b';
+                    if (v >= 55) return '#e67e22';
+                    return '#27ae60';
+                },
+                borderRadius: 4,
+                borderSkipped: false,
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: false },
+                tooltip: { callbacks: { label: ctx => ` ${ctx.raw}% full` } }
+            },
+            scales: {
+                y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' }, grid: { color: 'rgba(0,0,0,0.06)' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+</script>
+</body>
+</html>
